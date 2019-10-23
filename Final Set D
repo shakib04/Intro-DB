@@ -1,0 +1,24 @@
+select * from dept;
+select * from emp;
+
+1.	List the Emps of Deptno 20 whose Jobs are same as Deptno10 
+
+select * from emp where deptno=20 and job=any(select job from emp where deptno=10);
+
+2.	List the Name of dept where highest no. of emps are working.
+
+select deptno,count(*) from emp group by deptno;
+
+select dname from dept where deptno=any(select deptno from emp group by deptno having count(*)=(select max(count(*)) from emp group by deptno));
+
+3.	List the employee Name, Job, Annual Salary, deptno, Dept name and grade who earn 36000 a year or who are not CLERKS.
+
+select * from emp where sal*12=36000 and not job='CLERKS';
+
+4.	List the Empno, Ename, Sal, Dname, Grade, Exp, and Ann Sal of emps working for Dept10 or20. 
+
+select ename,empno,sal,dname,grade,round((sysdate-hiredate)/365) "Exp(yrs)",sal*12 from emp e,dept d,salgrade s where e.deptno=d.deptno and sal between losal and hisal and e.deptno=any(10,20);
+
+5.	find out the name of the managers who manage the minimum number of employees
+
+select m.ename from emp e,emp m where e.mgr=m.empno group by m.ename having count(*)=(select min(count(*)) from emp e,emp m where e.mgr=m.empno group by m.ename);
