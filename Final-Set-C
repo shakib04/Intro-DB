@@ -1,0 +1,24 @@
+select * from dept;
+select * from emp;
+
+1.	Find the highest paid employee of sales department.  
+
+select * from emp where sal=(select max(sal) from emp where deptno=(select deptno from dept where dname='SALES'));
+
+2.	Find the total annual sal to distribute job wise in the year 81 or month January.
+
+select sal*12 from emp group by job;
+
+3.	Find out the manager(mgr) names and the number of employees they manage
+
+select m.ename "Manager" ,e.ename Employee from emp e,emp m where e.mgr=m.empno;
+
+4.	List the Deptno, Name, Job, Salary and Sal+Comm of the SALESMAN who are earning maximum salary and commission.
+
+select deptno,ename,job,sal,comm,sal+nvl(comm,0) from emp where sal+nvl(comm,0)=(select max(sal+nvl(comm,0)) from emp where job='SALESMAN');
+
+5.	List out the Name, Job, Salary of the emps in the department with the highest average salary
+
+select * from emp where deptno=(select deptno from emp group by deptno having avg(sal)=(select max(avg(sal)) from emp group by deptno));
+
+
